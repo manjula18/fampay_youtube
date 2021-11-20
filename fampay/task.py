@@ -24,9 +24,7 @@ def call_youtube_api():
                                         API_KEY=API_KEYS[CURR_API_KEY_INDEX],
                                         PUBLISHED_AFTER=published_after.strftime(DATETIME_FORMAT),
                                         PUBLISHED_BEFORE=published_before.strftime(DATETIME_FORMAT))
-                if not next_page_token:
-                    break
-                else:
+                if next_page_token:
                     url += '&pageToken='+next_page_token
 
                 response = requests.get(url=url, timeout=API_TIMEOUT)
@@ -37,10 +35,13 @@ def call_youtube_api():
                 youtube_data = response.json()
                 next_page_token = youtube_data.get('nextPageToken', None)
                 update_youtube_data_table(youtube_data)
-            else:
+            elif response.status_code == 429:
+                print('data limit exhausted for the current API_KEY, so using another one')
                 # use new api key
                 CURR_API_KEY_INDEX += 1
                 CURR_API_KEY_INDEX %= len(API_KEYS)
+            if not next_page_token:
+                break
 
         published_after = published_before
         print('data fetched from youtube, published before-', published_before.strftime(DATETIME_FORMAT))
@@ -69,6 +70,5 @@ def update_youtube_data_table(youtube_data):
                                                 channel_id= snippet.get('channelId', ''),
                                                 channel_title=snippet.get('channelTitle', '')))
     if youtube_data_objects:
-        YouTubeData.objects.bulk_create(youtube_data_objects)
-
-
+        result = YouTubeData.objects.bulk_create(youtube_data_objects)
+        print(result, ' data inserted in youtube data table')
