@@ -7,21 +7,23 @@
 
 ## About The Project
 
-To make an API to fetch latest videos sorted in reverse chronological order of their publishing date-time from YouTube for a given tag/search query in a paginated response.
+We need an API to fetch latest videos from YouTube sorted in reverse chronological order of their published date-time from YouTube for a given tag/search query in a paginated response.
 
 ### Basic Requirements:
 
+#### Project brief
 - Server should call the YouTube API continuously in background (async) with some interval (say 10 seconds) for fetching the latest videos for a predefined search query and should store the data of videos (specifically these fields - Video title, description, publishing datetime, thumbnails URLs and any other fields you require) in a database with proper indexes.
 - A GET API which returns the stored video data in a paginated response sorted in descending order of published datetime.
 - A basic search API to search the stored videos using their title and description.
 - Dockerize the project.
 - It should be scalable and optimised.
 
-In the project I have created an API to get all the data stored in YouTube data table in a pagenated format, where offset and limit can be passed and search functionality on title and description. This does not only search with exact match but also it checks if the parameter value is present in title/description.
+#### Implementation details
+In the project I have created an API to get all the data stored in YouTube data table in a paginated format, where offset and limit can be passed and search functionality on title and description. This does not only search with exact match but also checks if the parameter value is present in title or description.
 
-In parallel one thread is created while starting the server which calls the YouTube API and fetch the data and insert it into youtube_data table. I have added 2 keys in the environment variables which switches when the api limit is exhausted. I am using local sqlite3 db for storing the data.
+In parallel one thread is created while starting the server which calls the YouTube API, fetches the data and inserts it into youtube_data table. I have added 2 keys in the environment variables which switches when the api limit is exhausted. I am using local sqlite3 db for storing the data.
 
-I have stored all the constant values in a file and using 30 seconds for api sleep time and cricket as the youtube query. Created a utility library for common methods.
+I have stored all the constant values in a file and using 30 seconds for api sleep time and cricket as the youtube query. Also created a utility library for common methods.
 
 ### Built With
 
@@ -49,16 +51,16 @@ Below is the step to run the code locally without docker
    ```sh
    git clone https://github.com/manjula18/fampay_youtube.git
    ```
-3. create environment variable and activate it
+3. Create an environment variable and activate it
    ```sh
    virtualenv venv
    source venv/bin/activate
    ```
-4. Install all the required libraries present in requirements.txt
+4. Install all the required libraries present in "requirements.txt"
    ```js
    pip3 install -r requirements.text
    ```
-5. run makemigrations, migrate and start the server
+5. Run the commands for makemigrations and migrate then start the server
    ```js
    python manage.py makemigrations
    python manage.py migrate
@@ -146,19 +148,13 @@ Response:
 ## Roadmap
 
 - Add Cronjob in place of threading for calling YouTube search api 
-- Add dashboard to view the data
+- Add dashboard to view and interact with the data built on top of the API
 - Optimize search api, so that it can search videos containing partial match: For this either we can search in the db with splitting the filter value and then searching in the db with and parameter, or we can store reverse indexes in another table with id associated with this and ony respond with the ids which are common.
-    
-- Use some online db to store the data
+- Use an online db to store the data
 
 ## Contact
 
 Manjula Choudhary - manjulachoudhary18@gmail.com
 
 Project Link: https://github.com/manjula18/fampay_youtube
-
-
-
-
-
 
