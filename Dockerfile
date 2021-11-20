@@ -10,15 +10,16 @@ RUN apt-get update && apt-get install -y \
 
 RUN git clone --single-branch --branch master https://github.com/manjula18/fampay_youtube.git
 
+ENV HOME /home/docker
 WORKDIR ./fampay_youtube
 
-RUN pip3 install -r requirements.txt
-
+RUN pip3 install -r requirements.text
 
 #this is the command which will run the api to start the server
-CMD python3 manage.py makemigrations
-CMD python3 manage.py migrate
-CMD python3 manage.py runserver 0.0.0.0:8000
+COPY docker_entry_cmd.sh $HOME/docker_entry_cmd.sh
+RUN ["chmod", "+x", "/home/docker/docker_entry_cmd.sh"]
+ENTRYPOINT ["/home/docker/docker_entry_cmd.sh"]
+#CMD python3 manage.py runserver 0.0.0.0:8000
 
 
 
