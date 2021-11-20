@@ -3,6 +3,7 @@ from .constants import SLEEP_TIME, YOUTUBE_QUERY, API_TIMEOUT, SEARCH_URL, DATET
 import requests
 import datetime
 from os import environ
+from .utility import parse_datetime_to_text, parse_text_to_datetime
 API_KEYS = environ.get('API_KEYS', '').split(',')
 
 
@@ -22,8 +23,8 @@ def call_youtube_api():
             try:
                 url = SEARCH_URL.format(YOUTUBE_QUERY=YOUTUBE_QUERY,
                                         API_KEY=API_KEYS[CURR_API_KEY_INDEX],
-                                        PUBLISHED_AFTER=published_after.strftime(DATETIME_FORMAT),
-                                        PUBLISHED_BEFORE=published_before.strftime(DATETIME_FORMAT))
+                                        PUBLISHED_AFTER=parse_datetime_to_text(published_after, DATETIME_FORMAT),
+                                        PUBLISHED_BEFORE=parse_datetime_to_text(published_before, DATETIME_FORMAT))
                 if next_page_token:
                     url += '&pageToken='+next_page_token
 
@@ -62,7 +63,7 @@ def update_youtube_data_table(youtube_data):
                 thumbnail = val.get('url', '')
                 if thumbnail:
                     break
-        published_at = datetime.datetime.strptime(snippet.get('publishedAt', ''), '%Y-%m-%dT%H:%M:%SZ')
+        published_at = parse_text_to_datetime(snippet.get('publishedAt', ''), DATETIME_FORMAT)
         youtube_data_objects.append(YouTubeData(title= snippet.get('title', ''),
                                                 description= snippet.get('description', ''),
                                                 published_at= published_at,
