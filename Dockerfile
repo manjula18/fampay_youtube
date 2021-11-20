@@ -19,7 +19,6 @@ RUN pip3 install -r requirements.text
 COPY docker_entry_cmd.sh $HOME/docker_entry_cmd.sh
 RUN ["chmod", "+x", "/home/docker/docker_entry_cmd.sh"]
 ENTRYPOINT ["/home/docker/docker_entry_cmd.sh"]
-#CMD python3 manage.py runserver 0.0.0.0:8000
 
 
 
