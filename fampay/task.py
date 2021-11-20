@@ -8,10 +8,16 @@ API_KEYS = environ.get('API_KEYS', '').split(',')
 
 
 def youtube_api_scheduler():
+    """
+    Starts a thread for calling youtube api
+    """
     _thread.start_new_thread(call_youtube_api, ())
 
 
 def call_youtube_api():
+    """
+    This method calls youtube search api in a loop and sleeps for the required time and then again starts the same
+    """
     CURR_API_KEY_INDEX=API_KEY_INDEX
     url = SEARCH_URL
     published_after = datetime.datetime.utcnow() - datetime.timedelta(seconds=SLEEP_TIME)
@@ -36,7 +42,7 @@ def call_youtube_api():
                 youtube_data = response.json()
                 next_page_token = youtube_data.get('nextPageToken', None)
                 update_youtube_data_table(youtube_data)
-            elif response.status_code == 429:
+            elif response.status_code in [429, 403]:
                 print('data limit exhausted for the current API_KEY, so using another one')
                 # use new api key
                 CURR_API_KEY_INDEX += 1
