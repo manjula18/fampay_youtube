@@ -1,0 +1,7 @@
+venv/
+db.sqlite3
+**\*.pyc
+*.xml
+*.iml
+.idea/
+**/__pycache__/*
