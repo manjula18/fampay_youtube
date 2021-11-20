@@ -1,0 +1,13 @@
+version: '2'
+services:
+  fampay-youtube:
+    build:
+     context: .
+     dockerfile: Dockerfile
+    ports:
+      #HOST_PORT:CONTAINER_PORT
+      - 8000:8000
+    environment:
+      API_KEYS: AIzaSyBJaEC4zGLemHaQESCJOTAlXzznOjAkAVA,AIzaSyCMu-Br8NJKqiM0EhlAe3uB2Z3LRFfHROs
+    restart: always
+    container_name: fampay-youtube
