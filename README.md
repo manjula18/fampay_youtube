@@ -37,6 +37,8 @@ I have used docker to build the project, which internally install python3, git a
 ### Prerequisites
 
 * Docker
+
+    Switch to the project folder and execute the below commands to run the docker
   ```sh
   docker-compose build --no-cache #for building the server
   docker-compose up #for running the built server
@@ -62,9 +64,9 @@ Below is the step to run the code locally without docker
    ```
 5. Run the commands for makemigrations and migrate then start the server
    ```js
-   python manage.py makemigrations
-   python manage.py migrate
-   python manage.py runserver 0.0.0.0:8000
+   python3 manage.py makemigrations
+   python3 manage.py migrate
+   python3 manage.py runserver 0.0.0.0:8000
    
    ```
 
