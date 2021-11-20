@@ -3,7 +3,6 @@ from django.shortcuts import render
 
 from django.views import View
 from django.http import HttpResponse
-from django.core import serializers
 import json
 from .models import YouTubeData
 from .constants import DEFAULT_LIMIT, MAX_LIMIT, DEFAULT_OFFSET, DATETIME_FORMAT, INVALID_ORDER_BY

@@ -15,7 +15,7 @@ class YouTubeData(models.Model):
     # url of the video
     url_thumbnail = models.TextField()
 
-    # created timestamp
+    # created at timestamp
     created_at = models.DateTimeField(auto_now_add=True)
 
     # channel id of youtube uploader
